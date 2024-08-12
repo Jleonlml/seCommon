@@ -1,7 +1,6 @@
 package com.devartdgo.testlibrary
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -11,74 +10,33 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import com.devartdgo.secommon.seButton.SeButton
-import com.devartdgo.secommon.seButton.SeButtonBaseProperties
-import com.devartdgo.secommon.seButton.V1Properties
-import com.devartdgo.secommon.seButton.V2Properties
-import com.devartdgo.secommon.seButton.V3Properties
-import com.devartdgo.secommon.seButton.Version
-import com.devartdgo.secommon.seButton.defaults.SeButtonCircleSizeDefaults
-import com.devartdgo.secommon.seConstants.SeColor
-import com.devartdgo.testlibrary.ui.theme.TestLibraryTheme
+import com.devartdgo.secommon.R
+import com.devartdgo.secommon.components.expandableItem.ExpandableItem
+import com.devartdgo.secommon.components.expandableItem.GenericExpandableItem
+import com.devartdgo.secommon.components.orderDetailsList.GenericOrderDetailsSection
+import com.devartdgo.secommon.components.orderDetailsList.OrderDetailsContentTypes
+import com.devartdgo.secommon.components.orderDetailsList.orderDetailsList
+import com.devartdgo.secommon.components.productItems.GenericProductItem
+import com.devartdgo.secommon.components.renderableIcon.RenderableIcon
+import com.devartdgo.secommon.components.rowItemWithLabelValueAndIcon.GenericRowItemWithLabelValueAndIcon
+import com.devartdgo.secommon.components.screenHeader.ScreenHeaderLayout
+import com.devartdgo.secommon.theme.BaseTheme
+import com.devartdgo.secommon.theme.ThemeEnum
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TestLibraryTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Column {
-                        SeButton(
-                            version = Version.V1(
-                                properties = V1Properties(
-                                    baseProperties = SeButtonBaseProperties(
-                                        onClick = { Log.d("Juan", "V1 on click")}
-                                    ),
-                                    text = "V1"
-                                )
-                            )
-                        )
-
-                        SeButton(
-                            version = Version.V2(
-                                properties = V2Properties(
-                                    baseProperties = SeButtonBaseProperties(
-                                        onClick = { Log.d("Juan", "V2 on click")}
-                                    ),
-                                    text = "V2",
-                                    color = SeColor.SE_COLOR2
-                                )
-                            )
-                        )
-
-                        SeButton(
-                            version = Version.V3(
-                                properties = V3Properties(
-                                    baseProperties = SeButtonBaseProperties(
-                                        onClick = { Log.d("Juan", "V3 on click")}
-                                    ),
-                                    icon = com.devartdgo.secommon.R.drawable.ic_se_check,
-                                )
-                            )
-                        )
-
-                        SeButton(
-                            version = Version.V3(
-                                properties = V3Properties(
-                                    baseProperties = SeButtonBaseProperties(
-                                        onClick = { Log.d("Juan", "V3 - second on click")}
-                                    ),
-                                    size = SeButtonCircleSizeDefaults.BIG,
-                                    color = SeColor.SE_COLOR2
-                                )
-                            )
-                        )
+            BaseTheme(
+                theme = ThemeEnum.THEME1
+            ).apply {
+                RenderTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        MainComp(this)
                     }
                 }
             }
@@ -86,10 +44,119 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-@Preview(showBackground = true)
 @Composable
-fun Preview() {
-    TestLibraryTheme {
+fun MainComp(theme: BaseTheme) {
+    val imageUrl = "https://farm3.staticflickr.com/2220/1572613671_7311098b76_z_d.jpg"
+    Column {
+        ScreenHeaderLayout(
+            startItem = {
+                RenderableIcon(
+                    iconRes = R.drawable.ic_chevron_left,
+                    contentDescription = "desc",
+                    isClickable = true,
+                    onClick = {}
+                )
+            }, endItem = {
+                RenderableIcon(
+                    iconRes = R.drawable.ic_close,
+                    contentDescription = "desc",
+                    isClickable = true,
+                    onClick = {}
+                )
+            },
+            headerText = "Header",
+            headerTextStyle = theme.Typography.headlineMedium
+        )
+        orderDetailsList(
+            sections = listOf(
+                GenericOrderDetailsSection(
+                    title = "Order Details",
+                    contents = listOf(
+                        OrderDetailsContentTypes.ItemRow(
+                            item = GenericRowItemWithLabelValueAndIcon(
+                                text1 = "Status",
+                                text2 = "Completed",
+                                icon = R.drawable.ic_check
+                            )
+                        ),
+                        OrderDetailsContentTypes.ItemRow(
+                            item = GenericRowItemWithLabelValueAndIcon(
+                                text1 = "OrderId",
+                                text2 = "Id",
+                            )
+                        ),
+                        OrderDetailsContentTypes.ItemRow(
+                            item = GenericRowItemWithLabelValueAndIcon(
+                                text1 = "Date",
+                                text2 = "date",
+                            )
+                        )
+                    )
+                ),
+                GenericOrderDetailsSection(
+                    title = "Delivery Details",
+                    contents = listOf(
+                        OrderDetailsContentTypes.ItemRow(
+                            item = GenericRowItemWithLabelValueAndIcon(
+                                text1 = "Delivery Address",
+                                text2 = "Address",
+                            )
+                        ),
+                        OrderDetailsContentTypes.ItemRow(
+                            item = GenericRowItemWithLabelValueAndIcon(
+                                text1 = "Instructions",
+                                text2 = "Leave at Door",
+                            )
+                        )
+                    )
+                ),
+                GenericOrderDetailsSection(
+                    title = "Purchased Items",
+                    contents = listOf(
+                        OrderDetailsContentTypes.ProductItem(
+                            item = GenericProductItem(
+                                quantity = 2,
+                                productName = "product1",
+                                caloriesOrModifiersStr = "240 cal",
+                                discountPrice = "$9.99",
+                                price = "19.99"
+                            )
+                        ),
+                        OrderDetailsContentTypes.ProductItem(
+                            item = GenericProductItem(
+                                quantity = 1,
+                                productName = "product2",
+                                caloriesOrModifiersStr = "240 cal",
+                                discountPrice = "$9.99",
+                                price = "19.99"
+                            )
+                        )
+                    )
+                ),
+                GenericOrderDetailsSection(
+                    title = "Summary",
+                    contents = listOf(
+                        OrderDetailsContentTypes.SummaryItem(
+                            item = GenericRowItemWithLabelValueAndIcon(
+                                text1 = "Subtotal",
+                                text2 = "$19.99",
+                            )
+                        ),
+                        OrderDetailsContentTypes.SummaryItem(
+                            item = GenericRowItemWithLabelValueAndIcon(
+                                text1 = "Savings",
+                                text2 = "$4.99",
+                            )
+                        ),
+                        OrderDetailsContentTypes.SummaryItem(
+                            item = GenericRowItemWithLabelValueAndIcon(
+                                text1 = "Total",
+                                text2 = "$15.00",
+                            )
+                        )
+                    )
+                )
+            )
+        )
     }
 }

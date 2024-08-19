@@ -34,7 +34,7 @@ enum class ThemeEnum (
             tertiary = Pink80
         ),
         lightColorScheme(
-            primary = PurpleGrey40,
+            primary = Red,
             secondary = PurpleGrey40,
             tertiary = Pink40
         ),

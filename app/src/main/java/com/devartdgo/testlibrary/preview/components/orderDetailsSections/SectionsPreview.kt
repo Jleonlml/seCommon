@@ -174,7 +174,7 @@ fun SummarySectionPreview() {
     )
     Surface(Modifier.background(Color.White)) {
         ExpandableItem(
-            title = "Pickup Details",
+            title = "Summary",
             expandIcon = R.drawable.ic_chevron_right) {
 
             items.forEach {
